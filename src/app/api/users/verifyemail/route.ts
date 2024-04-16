@@ -18,6 +18,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid User" }, { status: 400 });
     }
     console.log(user);
+
+    user.isVerified = true;
+    user.verifyToken = undefined;
+    user.verifyTokenExpiry = undefined;
+
+    await user.save();
+
+    return NextResponse.json(
+      {
+        message: "Email is verified succesfully",
+        success: true,
+      },
+      { status: 500 }
+    );
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
